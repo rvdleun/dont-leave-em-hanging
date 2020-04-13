@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "aframe": "^1.0.4",
+    "aframe-physics-system": "^4.0.1",
     "html-webpack-reload-plugin": "^2.0.0",
-    "http-server": "^0.12.1"
+    "http-server": "^0.12.1",
+    "three": "^0.115.0"
   }
 }
