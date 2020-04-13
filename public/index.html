@@ -5,10 +5,19 @@
 <a-scene physics="debug: false; gravity: 0">
     <a-assets>
         <img id="approved-1" src="assets/faces/approved-1.png" />
+        <img id="approved-2" src="assets/faces/approved-2.png" />
+        <img id="approved-3" src="assets/faces/approved-3.png" />
+        <img id="approved-4" src="assets/faces/approved-4.png" />
+        <img id="approved-5" src="assets/faces/approved-5.png" />
         <img id="fist" src="assets/faces/fist.png" />
         <img id="hand" src="assets/faces/hand.png" />
         <img id="not-approved-1" src="assets/faces/not-approved-1.png" />
+        <img id="not-approved-2" src="assets/faces/not-approved-2.png" />
+        <img id="not-approved-3" src="assets/faces/not-approved-3.png" />
         <img id="waiting-1" src="assets/faces/waiting-1.png" />
+        <img id="waiting-2" src="assets/faces/waiting-2.png" />
+        <img id="waiting-3" src="assets/faces/waiting-3.png" />
+        <img id="waiting-vincent" src="assets/faces/waiting-vincent.png" />
     </a-assets>
 
     <a-entity id="player">
@@ -25,8 +34,10 @@
         <a-sphere color="#666" scale="4 .01 4" position="0 0 0"></a-sphere>
     </a-entity>
 
-    <a-entity position="0 1.3 0" fanboy-spawner="enabled: true"></a-entity>
-    <!--<a-entity position="0 1.4 -1" fanboy></a-entity>-->
+    <!--<a-entity position="0 1.3 0" fanboy-spawner="enabled: true"></a-entity>-->
+    <a-entity>
+        <a-entity position="0 1.4 -1" fanboy></a-entity>
+    </a-entity>
 
 </a-scene>
 </body>
