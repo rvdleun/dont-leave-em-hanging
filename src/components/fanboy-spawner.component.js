@@ -1,6 +1,10 @@
 const NO_LANES = 6;
 const LANE_DIFF = 360 / NO_LANES;
 AFRAME.registerComponent('fanboy-spawner', {
+    schema: {
+        enabled: { type: 'boolean', default: false },
+    },
+
     events: {
         laneAvailable: function(e) {
             const lane = e.detail.lane;
@@ -25,7 +29,20 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.nextSpawn = 0;
     },
 
+    update: function() {
+        if (!this.enabled) {
+            for(let i = 0; i < NO_LANES; i++) {
+                this.lanes[i].forEach(fanboyEl => fanboyEl.emit('removeFanboy'));
+                this.lanes[i] = [];
+            }
+        }
+    },
+
     tick: function(time, delta) {
+        if (this.data.enabled === false) {
+            return;
+        }
+
         this.nextSpawn-=delta;
 
         if (this.nextSpawn < 0) {
@@ -43,7 +60,7 @@ AFRAME.registerComponent('fanboy-spawner', {
         const laneEl = document.createElement('a-entity');
         laneEl.setAttribute('rotation', {
             x: 0,
-            y: 45 - (lane * LANE_DIFF),
+            y: (lane * LANE_DIFF) + (Math.random() * (LANE_DIFF / 1.5)),
             z: 0
         });
 

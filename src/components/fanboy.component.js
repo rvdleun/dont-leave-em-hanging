@@ -1,6 +1,6 @@
 AFRAME.registerComponent('fanboy', {
     schema: {
-        distance: { type: 'number', default: 0 },
+        distance: { type: 'number', default: null },
         distanceDuration: { type: 'number', default: 5000 },
         hand: { type: 'string', default: 'right' },
         lane: { type: 'number', default: -1 },
@@ -15,7 +15,7 @@ AFRAME.registerComponent('fanboy', {
 
             this.contacted = true;
 
-            const { lane, playerHand, velocity } = e.detail;
+            const { playerHand, velocity } = e.detail;
 
             const rightHand = !playerHand.classList.contains(this.data.hand);
             const rightType = playerHand.classList.contains(this.data.type);
@@ -25,12 +25,21 @@ AFRAME.registerComponent('fanboy', {
             const approved = rightHand && rightType && rightVelocity;
 
             this.faceEl.setAttribute('src', `#${approved ? '' : 'not-'}approved-1`);
+            this.el.emit('removeFanboy', { emitLaneAvailable: true });
+        },
+
+        removeFanboy: function(e) {
+            const { lane } = this.data;
+
             this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; delay: 1000');
             this.handEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 300; easing: linear');
 
             setTimeout(() => {
-                this.el.emit('laneAvailable', { lane });
-                this.el.parentNode.removeChild(this.el);
+                this.el.parentNode.parentNode.removeChild(this.el.parentNode);
+
+                if (e.detail.emitLaneAvailable) {
+                    this.el.emit('laneAvailable', { lane });
+                }
             }, 1250 + (Math.random() * 500));
         }
     },
@@ -45,6 +54,14 @@ AFRAME.registerComponent('fanboy', {
             from: 0,
             to: 1
         });
+        face.setAttribute('animation__position', {
+            property: 'object3D.position.y',
+            to: .25 + (Math.random() * .1),
+            dir: 'alternate',
+            dur: 250 + (Math.random() * 250),
+            ease: 'linear',
+            loop: true,
+        });
         face.setAttribute('material', {
             alphaTest: .5,
             shader: 'flat',
@@ -58,11 +75,20 @@ AFRAME.registerComponent('fanboy', {
 
         const handEl = document.createElement('a-plane');
         const xUpdate = hand === 'left' ? -1 : 1;
+        const handRotation = Math.random() * 40 * xUpdate;
         handEl.setAttribute('animation', {
             property: 'opacity',
             delay: 250,
             from: 0,
             to: 1
+        });
+        handEl.setAttribute('animation__rotation', {
+            property: 'rotation',
+            to: `0 0 ${Math.random() * 40 * xUpdate + (Math.random() * 1)}`,
+            dir: 'alternate',
+            dur: 250 + (Math.random() * 250),
+            ease: 'linear',
+            loop: true,
         });
         handEl.setAttribute('opacity', '0');
         handEl.setAttribute('position', {
@@ -73,7 +99,7 @@ AFRAME.registerComponent('fanboy', {
         handEl.setAttribute('rotation', {
             x: 0,
             y: 0,
-            z: Math.random() * 40 * xUpdate,
+            z: handRotation,
         });
         handEl.setAttribute('scale', {
             x: .2 * xUpdate,
@@ -103,11 +129,13 @@ AFRAME.registerComponent('fanboy', {
 
         this.faceEl = face;
         this.handEl = handEl;
-        this.receiverEl = receiver;
     },
 
     update: function() {
         const { distance, distanceDuration } = this.data;
-        this.el.setAttribute('animation', `property: object3D.position.z; to: ${distance}; dur: ${distanceDuration}`);
+
+        if (!!distance) {
+            this.el.setAttribute('animation', `property: object3D.position.z; to: ${distance}; dur: ${distanceDuration}`);
+        }
     }
 });
