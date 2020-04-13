@@ -7,8 +7,11 @@ AFRAME.registerComponent('fanboy-spawner', {
 
     events: {
         laneAvailable: function(e) {
-            const lane = e.detail.lane;
+            console.log('Available');
+
+            const { lane } = e.detail;
             this.lanes[lane].shift();
+            let first = true;
             this.lanes[lane].forEach(fanboyEl => {
                 const fanboy = fanboyEl.components['fanboy'];
                 const { distance } = fanboy.data;
@@ -16,6 +19,11 @@ AFRAME.registerComponent('fanboy-spawner', {
                     distance: distance + .5,
                     distanceDuration: 500 + (Math.random() * 500),
                 });
+
+                if (first) {
+                    setTimeout(() => fanboyEl.setAttribute('fanboy', { active: true }), 1000);
+                    first = false;
+                }
             });
         }
     },
@@ -60,7 +68,7 @@ AFRAME.registerComponent('fanboy-spawner', {
         const laneEl = document.createElement('a-entity');
         laneEl.setAttribute('rotation', {
             x: 0,
-            y: (lane * LANE_DIFF) + (Math.random() * (LANE_DIFF / 1.5)),
+            y: (lane * LANE_DIFF) + (Math.random() * (LANE_DIFF / 1.75)),
             z: 0
         });
 
@@ -77,5 +85,9 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.el.appendChild(laneEl);
 
         this.lanes[lane].push(fanboyEl);
+
+        if (this.lanes[lane].length === 1) {
+            setTimeout(() => fanboyEl.setAttribute('fanboy', { active: true }), 5000);
+        }
     }
 });

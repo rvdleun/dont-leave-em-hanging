@@ -2,6 +2,7 @@ const approvedText = ['YEAH!', 'WOO!', 'NICE!', 'COOL!', 'AWESOME!'];
 
 AFRAME.registerComponent('fanboy', {
     schema: {
+        active: { type: 'boolean', default: false },
         distance: { type: 'number', default: null },
         distanceDuration: { type: 'number', default: 5000 },
         hand: { type: 'string', default: 'right' },
@@ -66,20 +67,22 @@ AFRAME.registerComponent('fanboy', {
             this.textEl.setAttribute('animation__opacity_gone', 'property: opacity; from: 1; to: 0; dur: 250; delay: 2000; easing: linear');
 
             setTimeout(() => {
-                this.el.parentNode.parentNode.removeChild(this.el.parentNode);
-
                 if (e.detail.emitLaneAvailable) {
-                    this.el.emit('laneAvailable', { lane });
+                    this.el.emit('laneAvailable', { lane }, true);
                 }
+
+                this.el.parentNode.parentNode.removeChild(this.el.parentNode);
             }, 2250 + (Math.random() * 500));
         }
     },
 
     init: function() {
         const { hand, lane, type } = this.data;
+        this.timeLeft = 3000;
         this.ready = false;
+        this.worried = false;
 
-        const faceSrc = Math.floor(Math.random()) * 100 === 1 ? 'vincent' : (Math.floor(Math.random() * 3) + 1).toString();
+        const faceSrc = Math.random() <= .01 ? 'vincent' : (Math.floor(Math.random() * 3) + 1).toString();
         const face = document.createElement('a-plane');
         face.setAttribute('animation', {
             property: 'opacity',
@@ -201,6 +204,51 @@ AFRAME.registerComponent('fanboy', {
 
         if (!!distance) {
             this.el.setAttribute('animation', `property: object3D.position.z; to: ${distance}; dur: ${distanceDuration}`);
+        }
+    },
+
+    tick: function(time, delta) {
+        if (!this.data.active) {
+            return;
+        }
+
+        this.timeLeft-=delta;
+
+        if (this.timeLeft < 0) {
+            if (this.worried) {
+                this.contacted = true;
+                this.data.active = false;
+
+                this.handEl.setAttribute('animation__color', {
+                    property: 'material.color',
+                    to: '#f00',
+                    dur: 500,
+                    easing: 'linear'
+                });
+                this.handEl.setAttribute('animation__position', {
+                    property: 'object3D.position.y',
+                    to: '0',
+                    dur: 2000,
+                    easing: 'linear'
+                });
+                this.textEl.setAttribute('animation__color', {
+                    property: 'color',
+                    from: '#700',
+                    to: '#f00',
+                    dur: 1000,
+                    easing: 'linear'
+                });
+                this.textEl.setAttribute('animation__opacity', 'property: opacity; from: 0; to: 1; dur: 250; easing: linear');
+
+                this.faceEl.setAttribute('src', `#sad-${Math.floor(Math.random() * 3) + 1}`);
+                this.el.emit('removeFanboy', { emitLaneAvailable: true });
+
+                this.textEl.setAttribute('value', 'Too late!');
+            } else {
+                this.faceEl.setAttribute('src', `#worried-${Math.floor(Math.random() * 3) + 1}`);
+                this.timeLeft = 2000;
+                this.worried = true;
+            }
         }
     }
 });
