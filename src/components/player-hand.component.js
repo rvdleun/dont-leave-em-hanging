@@ -53,6 +53,5 @@ AFRAME.registerComponent('player-hand', {
         classList.remove('hand');
 
         classList.add(this.gripDown && this.triggerDown ? 'fist' : 'hand');
-        console.log(this.gripDown, this.triggerDown);
     }
 });

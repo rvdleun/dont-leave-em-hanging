@@ -3,7 +3,6 @@ const LANE_DIFF = 360 / NO_LANES;
 AFRAME.registerComponent('fanboy-spawner', {
     events: {
         laneAvailable: function(e) {
-            console.log('Lane available', e);
             const lane = e.detail.lane;
             this.lanes[lane].shift();
             this.lanes[lane].forEach(fanboyEl => {
@@ -13,11 +12,7 @@ AFRAME.registerComponent('fanboy-spawner', {
                     distance: distance + .5,
                     distanceDuration: 500 + (Math.random() * 500),
                 });
-
-                console.log(distance);
             });
-
-            console.log(this.lanes[lane], lane);
         }
     },
 

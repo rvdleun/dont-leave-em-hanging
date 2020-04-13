@@ -12,11 +12,11 @@
     </a-assets>
 
     <a-entity id="player">
-        <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" aaaaplayer-hand>
-            <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0.055 0.017 0" scale="0.05 0.10681 0.17644" visible="false"></a-box>
+        <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>
+            <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
         <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
-            <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="-0.055 0.017 0" scale="0.05 0.10681 0.17644" visible="false"></a-box>
+            <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
     </a-entity>
 
@@ -25,9 +25,8 @@
         <a-sphere color="#666" scale="4 .01 4" position="0 0 0"></a-sphere>
     </a-entity>
 
-    <!--<a-entity position="0 1.3 0" fanboy-spawner></a-entity>-->
+    <a-entity position="0 1.6 0" fanboy-spawner></a-entity>
 
-    <a-entity position="0 0 -.3" fanboy="distance: -.4"></a-entity>
 </a-scene>
 </body>
 </html>

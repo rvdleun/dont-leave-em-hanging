@@ -12,7 +12,6 @@ AFRAME.registerComponent('hand-receiver', {
             }
 
             const velocity = playerHand.getAttribute('data-velocity');
-            console.log(velocity);
             this.el.emit('contact', { lane: this.data.lane, playerHand, velocity }, true);
         }
     },

@@ -24,8 +24,6 @@ AFRAME.registerComponent('fanboy', {
                 (this.data.type === 'fist' && velocity < .05);
             const approved = rightHand && rightType && rightVelocity;
 
-            // this.handEl.removeChild(this.receiverEl);
-
             this.faceEl.setAttribute('src', `#${approved ? '' : 'not-'}approved-1`);
             this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; delay: 1000');
             this.handEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 300; easing: linear');
