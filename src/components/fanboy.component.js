@@ -23,8 +23,8 @@ AFRAME.registerComponent('fanboy', {
             const rightHand = !playerHand.classList.contains(this.data.hand);
             const rightType = playerHand.classList.contains(this.data.type);
             const rightVelocity =
-                (this.data.type === 'hand' && velocity > .1) ||
-                (this.data.type === 'fist' && velocity < .05);
+                (this.data.type === 'hand' && velocity > .2) ||
+                (this.data.type === 'fist' && velocity < .2);
             const approved = rightHand && rightType && rightVelocity;
 
             if (!rightHand) {
@@ -208,7 +208,7 @@ AFRAME.registerComponent('fanboy', {
     },
 
     tick: function(time, delta) {
-        if (!this.data.active) {
+        if (!this.data.active || this.contacted) {
             return;
         }
 
