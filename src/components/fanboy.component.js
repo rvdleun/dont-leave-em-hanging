@@ -41,6 +41,7 @@ AFRAME.registerComponent('fanboy', {
                 text = approvedText[Math.floor(Math.random() * approvedText.length)];
             }
 
+            this.handEl.emit('playSound');
             if (approved) {
                 this.fadeHand('#0f0', '#0f0', text);
                 this.setFace('approved', 5);
@@ -144,6 +145,10 @@ AFRAME.registerComponent('fanboy', {
             dur: 250 + (Math.random() * 250),
             loop: true,
         });
+        handEl.setAttribute('material', {
+            alphaTest: .5,
+            shader: 'flat',
+        });
         handEl.setAttribute('opacity', '0');
         handEl.setAttribute('position', handPosition);
         handEl.setAttribute('rotation', {
@@ -156,9 +161,10 @@ AFRAME.registerComponent('fanboy', {
             y: .2,
             z: .1
         });
-        handEl.setAttribute('material', {
-            alphaTest: .5,
-            shader: 'flat',
+        handEl.setAttribute('sound', {
+            on: 'playSound',
+            src: `#high-five-${Math.floor(Math.random() * 3) + 1}`,
+            volume: 1,
         });
         handEl.setAttribute('src', `#${type}`);
         handEl.setAttribute('transparent', 'false');
@@ -166,16 +172,22 @@ AFRAME.registerComponent('fanboy', {
 
         const textEl = document.createElement('a-text');
         textEl.setAttribute('align', 'center');
-        textEl.setAttribute('opacity', '0');
+        textEl.setAttribute('font', 'mozillavr');
+        textEl.setAttribute('opacity', '1');
         textEl.setAttribute('position', {
             x: handPosition.x,
             y: handPosition.y,
             z: handPosition.z + .05,
         });
+        textEl.setAttribute('rotation', {
+            x: 0,
+            y: 0,
+            z: -30 + (Math.random() * 60),
+        });
         textEl.setAttribute('animation__scale', {
             property: 'scale',
-            from: '.275 .275 .1',
-            to: '.3 .3 .1',
+            from: '.225 .225 .1',
+            to: '.275 .275 .1',
             dir: 'alternate',
             dur: 500,
             easing: 'linear',

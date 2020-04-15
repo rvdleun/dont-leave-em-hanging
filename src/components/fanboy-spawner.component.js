@@ -6,7 +6,7 @@ AFRAME.registerComponent('fanboy-spawner', {
     },
 
     events: {
-        cleanUp: function(e) {
+        cleanUp: function() {
             for(let i = 0; i < NO_LANES; i++) {
                 this.lanes[i].forEach(fanboyEl => fanboyEl.emit('removeFanboy'));
                 this.lanes[i] = [];
@@ -30,14 +30,25 @@ AFRAME.registerComponent('fanboy-spawner', {
                     first = false;
                 }
             });
+
+            this.updateLaneVolume();
         }
     },
 
     init: function() {
         this.lanes = [];
+        this.laneSounds = [];
+
         for(let i = 0; i < NO_LANES; i++) {
             this.lanes[i] = [];
         }
+
+        this.el.setAttribute('sound', {
+            autoplay: true,
+            loop: true,
+            src: '#audience',
+            volume: .1,
+        });
 
         this.nextSpawn = 0;
     },
@@ -54,12 +65,15 @@ AFRAME.registerComponent('fanboy-spawner', {
                     fanboyEl.emit('fadeHand', { from: '#fff', to: '#fff', text: ''});
                     fanboyEl.emit('setFace', { id: 'approved', no: 5});
                     setTimeout(() => {
-                        fanboyEl.setAttribute('animation__ascend', 'property: object3D.position.y; to: 5; dur: 2000');
-                        fanboyEl.emit('removeFanboy')
+                        fanboyEl.setAttribute('animation__ascend', 'property: object3D.position.y; to: 5; dur: 4000');
+                        setTimeout(() => {
+                            fanboyEl.emit('removeFanboy')
+                        }, 1000 + Math.random() * 750);
                     }, 2000);
                 });
                 this.lanes[i] = [];
             }
+            this.updateLaneVolume();
         }
     },
 
@@ -71,11 +85,8 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.nextSpawn-=delta;
 
         if (this.nextSpawn < 0) {
-            // const lane = (Math.floor(Math.random() * 3));
-            // this.spawnFanboy(lane);
-
             this.spawnFanboy(Math.floor(Math.random() * NO_LANES));
-            this.nextSpawn = Math.random() * 2000;
+            this.nextSpawn = Math.random() * 1200;
         }
     },
 
@@ -105,9 +116,15 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.el.appendChild(laneEl);
 
         this.lanes[lane].push(fanboyEl);
+        this.updateLaneVolume();
 
         if (this.lanes[lane].length === 1) {
             setTimeout(() => fanboyEl.setAttribute('fanboy', { active: true }), 5000);
         }
+    },
+
+    updateLaneVolume: function() {
+        const volume = this.lanes.reduce((total, lane) => total + lane.length * .005, 0);
+        this.el.setAttribute('sound', 'volume', volume);
     }
 });

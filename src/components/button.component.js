@@ -36,7 +36,8 @@ AFRAME.registerComponent('button', {
         const textEl = document.createElement('a-text');
         textEl.setAttribute('align', 'center');
         textEl.setAttribute('color', color);
-        textEl.setAttribute('position', '0 0 .1');
+        textEl.setAttribute('font', 'mozillavr');
+        textEl.setAttribute('position', '0 0.2 .1');
         textEl.setAttribute('scale', '2 2 2');
         textEl.setAttribute('value', text);
         this.el.appendChild(textEl);

@@ -9,5 +9,6 @@ import './components/fanboy-circle.component';
 import './components/fanboy-spawner.component';
 import './components/game.component';
 import './components/hand-receiver.component';
+import './components/music-game.component';
 import './components/player-hand.component';
 import './components/title-screen.component';

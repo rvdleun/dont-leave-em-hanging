@@ -27,29 +27,35 @@ AFRAME.registerComponent('fanboy-circle', {
 
         this.fanboys = [];
         for(let rotation = 0; rotation < radius; rotation+=radius / noFanboys) {
-            const entity = document.createElement('a-entity');
-            entity.setAttribute('rotation', {
-                x: 0,
-                y: rotation,
-                z: 0,
-            });
+            setTimeout(() => {
+                if (!this.data.enabled) {
+                    return;
+                }
 
-            const fanboy = document.createElement('a-entity');
-            fanboy.setAttribute('fanboy', {
-                canContact: false,
-                distance: -distance,
-                hand: Math.random() < .5 ? 'left': 'right',
-                type: Math.random() < .5 ? 'fist' : 'hand',
-            });
-            fanboy.setAttribute('position', {
-                x: 0,
-                y: 0,
-                z: -distance
-            });
-            entity.appendChild(fanboy);
-            this.container.appendChild(entity);
+                const entity = document.createElement('a-entity');
+                entity.setAttribute('rotation', {
+                    x: 0,
+                    y: rotation,
+                    z: 0,
+                });
 
-            this.fanboys.push(fanboy);
+                const fanboy = document.createElement('a-entity');
+                fanboy.setAttribute('fanboy', {
+                    canContact: false,
+                    distance: -distance,
+                    hand: Math.random() < .5 ? 'left': 'right',
+                    type: Math.random() < .5 ? 'fist' : 'hand',
+                });
+                fanboy.setAttribute('position', {
+                    x: 0,
+                    y: 0,
+                    z: -distance
+                });
+                entity.appendChild(fanboy);
+                this.container.appendChild(entity);
+
+                this.fanboys.push(fanboy);
+            }, rotation * 10);
         }
     }
 });

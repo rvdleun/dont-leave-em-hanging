@@ -1,8 +1,10 @@
 AFRAME.registerComponent('game', {
     schema: {
+        applause: { type: 'selector', default: '#ambience-applause' },
         duration: { type: 'number', default: 60000 },
         enabled: { type: 'boolean', default: false },
         fanboyCircle: { type: 'selector', default: '[fanboy-circle] '},
+        musicGame: { type: 'selector', default: '[music-game]' },
         radius: { type: 'number', default: 360 },
         titleScreen: { type: 'selector', default: '[title-screen] '},
     },
@@ -41,11 +43,21 @@ AFRAME.registerComponent('game', {
     },
 
     onAnimationSetupEnd: function() {
+        this.data.applause.removeAttribute('animation');
+        this.data.musicGame.setAttribute('music-game', 'playing', true);
         this.spawner.setAttribute('fanboy-spawner', 'enabled', true);
     },
 
     onAnimationTimerEnd: function() {
         this.el.setAttribute('game', 'enabled', false);
+        this.data.applause.setAttribute('animation', {
+            dur: 2500,
+            property: 'sound.volume',
+            from: 0,
+            to: .7,
+        });
+        this.data.applause.emit('playSound');
+        this.data.musicGame.setAttribute('music-game', 'playing', false);
         this.spawner.setAttribute('fanboy-spawner', 'enabled', false);
 
         this.timer.removeAttribute('animation__setup');
