@@ -1,11 +1,16 @@
 AFRAME.registerComponent('fanboy-circle', {
     schema: {
         distance: { type: 'number', default: 3.5 },
+        enabled: { type: 'boolean', default: false },
         noFanboys: { type: 'number', default: 40 },
     },
 
-    init: function() {
-        const { distance, noFanboys } = this.data;
+    update: function() {
+        const { distance, enabled, noFanboys } = this.data;
+
+        if (!enabled) {
+            return;
+        }
 
         for(let rotation = 0; rotation < 360; rotation+=360 / noFanboys) {
             const entity = document.createElement('a-entity');

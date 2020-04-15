@@ -39,12 +39,17 @@
         <a-sky color="#222"></a-sky>
         <a-sphere color="#666" scale="4 .01 4" position="0 0 0"></a-sphere>
         <a-sphere color="#333" scale=".85 .01 .85" position="0 0.05 0"></a-sphere>
+        <a-entity position="0 1 0" fanboy-circle="enabled: false"></a-entity>
     </a-entity>
 
-    <!--<a-entity position="0 1 0" fanboy-circle></a-entity>-->
-    <a-entity position="0 1.3 0" fanboy-spawner="enabled: true"></a-entity>
+    <a-entity id="game" game="duration: 5000; enabled: false">
+        <a-entity id="spawner" position="0 1.3 0" fanboy-spawner="enabled: false"></a-entity>
+        <a-ring id="timer" color="#fff" position="0 0.05 0" rotation="90 90 0" scale=".85 .85 .85" side="double" radius-outer="1.1" theta-length="360"></a-ring>
+    </a-entity>
+
+
     <!--<a-entity>-->
-        <!--<a-entity position="0 1.4 -1" fanboy="active: true"></a-entity>-->
+        <!--<a-entity position="0 1.4 -1" fanboy="active: false; debugContact: true; debugContactApproved: false"></a-entity>-->
     <!--</a-entity>-->
 
 

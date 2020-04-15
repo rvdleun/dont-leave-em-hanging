@@ -6,6 +6,13 @@ AFRAME.registerComponent('fanboy-spawner', {
     },
 
     events: {
+        cleanUp: function(e) {
+            for(let i = 0; i < NO_LANES; i++) {
+                this.lanes[i].forEach(fanboyEl => fanboyEl.emit('removeFanboy'));
+                this.lanes[i] = [];
+            }
+        },
+
         laneAvailable: function(e) {
             const { lane } = e.detail;
             this.lanes[lane].shift();
@@ -38,7 +45,19 @@ AFRAME.registerComponent('fanboy-spawner', {
     update: function() {
         if (!this.enabled) {
             for(let i = 0; i < NO_LANES; i++) {
-                this.lanes[i].forEach(fanboyEl => fanboyEl.emit('removeFanboy'));
+                this.lanes[i].forEach(fanboyEl => {
+                    fanboyEl.setAttribute('fanboy', {
+                        active: false,
+                        canContact: false,
+                    });
+                    fanboyEl.removeAttribute('animation');
+                    fanboyEl.emit('fadeHand', { from: '#fff', to: '#fff', text: ''});
+                    fanboyEl.emit('setFace', { id: 'approved', no: 5});
+                    setTimeout(() => {
+                        fanboyEl.setAttribute('animation__ascend', 'property: object3D.position.y; to: 5; dur: 2000');
+                        fanboyEl.emit('removeFanboy')
+                    }, 2000);
+                });
                 this.lanes[i] = [];
             }
         }

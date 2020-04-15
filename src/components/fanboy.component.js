@@ -56,20 +56,41 @@ AFRAME.registerComponent('fanboy', {
             }, approved ? 0 : 1000);
         },
 
+        fadeHand: function(e) {
+            if (this.fadingHand) {
+                return;
+            }
+
+            this.fadingHand = true;
+
+            const { from, to, text } = e.detail;
+            this.fadeHand(from, to, text);
+        },
+
         removeFanboy: function(e) {
+            if (this.removing) {
+                return;
+            }
+
+            this.removing = true;
             const { lane } = this.data;
 
             this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; easing: linear');
             this.textEl.setAttribute('animation__opacity_gone', 'property: opacity; from: 1; to: 0; dur: 250; delay: 1000; easing: linear');
 
             setTimeout(() => {
-                if (e.detail.emitLaneAvailable) {
+                if (e.detail && e.detail.emitLaneAvailable) {
                     this.el.emit('laneAvailable', { lane }, true);
                 }
 
                 this.el.parentNode.parentNode.removeChild(this.el.parentNode);
             }, 1250);
-        }
+        },
+
+        setFace: function(e) {
+            const { id, no } = e.detail;
+            this.setFace(id, no);
+        },
     },
 
     init: function() {
@@ -160,7 +181,6 @@ AFRAME.registerComponent('fanboy', {
             easing: 'linear',
             loop: true,
         });
-        textEl.setAttribute('value', 'TEST');
         this.el.appendChild(textEl);
 
         const receiver = document.createElement('a-box');
