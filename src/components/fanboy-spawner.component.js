@@ -80,7 +80,7 @@ AFRAME.registerComponent('fanboy-spawner', {
     },
 
     spawnFanboy: function(lane) {
-        const distance = -.75 - (.5 * this.lanes[lane].length);
+        const distance = -.85 - (.5 * this.lanes[lane].length);
         if (distance < -5) {
             return;
         }

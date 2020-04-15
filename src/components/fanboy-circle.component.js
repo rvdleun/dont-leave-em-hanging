@@ -2,17 +2,31 @@ AFRAME.registerComponent('fanboy-circle', {
     schema: {
         distance: { type: 'number', default: 3.5 },
         enabled: { type: 'boolean', default: false },
-        noFanboys: { type: 'number', default: 40 },
+        noFanboys: { type: 'number', default: 30 },
+        radius: { type: 'number', default: 270 },
+    },
+
+    init: function() {
+        const container = document.createElement('a-entity');
+        this.el.appendChild(container);
+
+        this.container = container;
+        this.fanboys = [];
     },
 
     update: function() {
-        const { distance, enabled, noFanboys } = this.data;
+        const { distance, enabled, noFanboys, radius } = this.data;
 
         if (!enabled) {
+            this.fanboys.forEach(fanboy => {
+                fanboy.emit('fadeHand', { from: '#fff', to: '#fff', text: '' });
+                fanboy.emit('removeFanboy');
+            });
             return;
         }
 
-        for(let rotation = 0; rotation < 360; rotation+=360 / noFanboys) {
+        this.fanboys = [];
+        for(let rotation = 0; rotation < radius; rotation+=radius / noFanboys) {
             const entity = document.createElement('a-entity');
             entity.setAttribute('rotation', {
                 x: 0,
@@ -33,7 +47,9 @@ AFRAME.registerComponent('fanboy-circle', {
                 z: -distance
             });
             entity.appendChild(fanboy);
-            this.el.appendChild(entity);
+            this.container.appendChild(entity);
+
+            this.fanboys.push(fanboy);
         }
     }
 });
