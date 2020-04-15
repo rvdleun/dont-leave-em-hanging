@@ -7,8 +7,6 @@ AFRAME.registerComponent('fanboy-spawner', {
 
     events: {
         laneAvailable: function(e) {
-            console.log('Available');
-
             const { lane } = e.detail;
             this.lanes[lane].shift();
             let first = true;
@@ -54,6 +52,9 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.nextSpawn-=delta;
 
         if (this.nextSpawn < 0) {
+            // const lane = (Math.floor(Math.random() * 3));
+            // this.spawnFanboy(lane);
+
             this.spawnFanboy(Math.floor(Math.random() * NO_LANES));
             this.nextSpawn = Math.random() * 2000;
         }

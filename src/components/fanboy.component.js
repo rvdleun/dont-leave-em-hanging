@@ -3,6 +3,7 @@ const approvedText = ['YEAH!', 'WOO!', 'NICE!', 'COOL!', 'AWESOME!'];
 AFRAME.registerComponent('fanboy', {
     schema: {
         active: { type: 'boolean', default: false },
+        canContact: { type: 'boolean', default: true },
         distance: { type: 'number', default: null },
         distanceDuration: { type: 'number', default: 5000 },
         hand: { type: 'string', default: 'right' },
@@ -12,7 +13,7 @@ AFRAME.registerComponent('fanboy', {
 
     events: {
         contact: function(e) {
-            if (this.contacted || !this.ready) {
+            if (!this.data.canContact || this.contacted || !this.ready) {
                 return;
             }
 
@@ -94,7 +95,6 @@ AFRAME.registerComponent('fanboy', {
             to: .25 + (Math.random() * .1),
             dir: 'alternate',
             dur: 250 + (Math.random() * 250),
-            ease: 'linear',
             loop: true,
         });
         face.setAttribute('material', {
@@ -127,7 +127,6 @@ AFRAME.registerComponent('fanboy', {
             to: `0 0 ${Math.random() * 40 * xUpdate + (Math.random() * 1)}`,
             dir: 'alternate',
             dur: 250 + (Math.random() * 250),
-            ease: 'linear',
             loop: true,
         });
         handEl.setAttribute('opacity', '0');
