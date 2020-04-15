@@ -4,6 +4,8 @@ AFRAME.registerComponent('fanboy', {
     schema: {
         active: { type: 'boolean', default: false },
         canContact: { type: 'boolean', default: true },
+        debugContact: { type: 'boolean', default: false },
+        debugContactApproved: { type: 'boolean', default: false },
         distance: { type: 'number', default: null },
         distanceDuration: { type: 'number', default: 5000 },
         hand: { type: 'string', default: 'right' },
@@ -28,44 +30,37 @@ AFRAME.registerComponent('fanboy', {
                 (this.data.type === 'fist' && velocity < .2);
             const approved = rightHand && rightType && rightVelocity;
 
+            let text = '';
             if (!rightHand) {
-                this.textEl.setAttribute('value', 'Wrong hand');
+                text = 'Wrong hand';
             } else if (!rightType) {
-                this.textEl.setAttribute('value', (this.data.type === 'hand' ? 'High five' : 'Fist bump') + '\nrequested');
+                text = (this.data.type === 'hand' ? 'High five' : 'Fist bump') + '\nrequested';
             } else if(!rightVelocity) {
-                this.textEl.setAttribute('value', (this.data.type === 'hand' ? 'Too slow' : 'Too fast'));
+                text = (this.data.type === 'hand' ? 'Too slow' : 'Too fast');
             } else {
-                this.textEl.setAttribute('value', approvedText[Math.floor(Math.random() * approvedText.length)]);
+                text = approvedText[Math.floor(Math.random() * approvedText.length)];
             }
 
-            const faceSrc = approved ?
-                `#approved-${Math.floor(Math.random() * 5) + 1}` :
-                `#not-approved-${Math.floor(Math.random() * 3) + 1}`;
-            this.handEl.setAttribute('animation__color', {
-                property: 'material.color',
-                to: approved ? '#0f0' : '#f00',
-                dur: 500,
-                easing: 'linear'
-            });
-            this.textEl.setAttribute('animation__color', {
-                property: 'color',
-                from: approved ? '#070' : '#700',
-                to: approved ? '#0f0' : '#f00',
-                dur: 1000,
-                easing: 'linear'
-            });
-            this.textEl.setAttribute('animation__opacity', 'property: opacity; from: 0; to: 1; dur: 250; easing: linear');
+            if (approved) {
+                this.fadeHand('#0f0', '#0f0', text);
+                this.setFace('approved', 5);
 
-            this.faceEl.setAttribute('src', faceSrc);
-            this.el.emit('removeFanboy', { emitLaneAvailable: true });
+                this.faceEl.setAttribute('animation__ascend', 'property: object3D.position.y; to: 3; dur: 2000');
+            } else {
+                this.fadeHand('#f00', '#f00', text);
+                this.setFace('not-approved', 3);
+            }
+
+            setTimeout(() => {
+                this.el.emit('removeFanboy', { emitLaneAvailable: true });
+            }, approved ? 0 : 1000);
         },
 
         removeFanboy: function(e) {
             const { lane } = this.data;
 
-            this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; delay: 1000');
-            this.handEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 300; easing: linear');
-            this.textEl.setAttribute('animation__opacity_gone', 'property: opacity; from: 1; to: 0; dur: 250; delay: 2000; easing: linear');
+            this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; easing: linear');
+            this.textEl.setAttribute('animation__opacity_gone', 'property: opacity; from: 1; to: 0; dur: 250; delay: 1000; easing: linear');
 
             setTimeout(() => {
                 if (e.detail.emitLaneAvailable) {
@@ -73,17 +68,16 @@ AFRAME.registerComponent('fanboy', {
                 }
 
                 this.el.parentNode.parentNode.removeChild(this.el.parentNode);
-            }, 2250 + (Math.random() * 500));
+            }, 1250);
         }
     },
 
     init: function() {
-        const { hand, lane, type } = this.data;
+        const { debugContact, hand, lane, type } = this.data;
         this.timeLeft = 3000;
         this.ready = false;
         this.worried = false;
 
-        const faceSrc = Math.random() <= .01 ? 'vincent' : (Math.floor(Math.random() * 3) + 1).toString();
         const face = document.createElement('a-plane');
         face.setAttribute('animation', {
             property: 'opacity',
@@ -104,8 +98,8 @@ AFRAME.registerComponent('fanboy', {
         face.setAttribute('opacity', '0');
         face.setAttribute('position', '0 .2 0');
         face.setAttribute('scale', '.25 .25 .25');
-        face.setAttribute('src', `#waiting-${faceSrc}`);
         face.setAttribute('transparent', 'true');
+
         this.el.appendChild(face);
 
         const handEl = document.createElement('a-plane');
@@ -182,20 +176,19 @@ AFRAME.registerComponent('fanboy', {
         this.handEl = handEl;
         this.textEl = textEl;
 
+        if (Math.random() <= .005) {
+            face.setAttribute('src', `#waiting-vincent`);
+        } else {
+            this.setFace('waiting', 3);
+        }
+
         setTimeout(() => {
             this.ready = true;
         }, 250);
-        //
-        // setTimeout(() => {
-        //     const playerHand = document.createElement('a-entity');
-        //     playerHand.classList.add(this.data.hand === 'left' ? 'right' : 'left');
-        //     playerHand.classList.add(this.data.type);
-        //
-        //     this.el.emit('contact', {
-        //         playerHand,
-        //         velocity: 5,
-        //     });
-        // }, 3000);
+
+        if (debugContact) {
+            this.setupDebugContact();
+        }
     },
 
     update: function() {
@@ -218,36 +211,59 @@ AFRAME.registerComponent('fanboy', {
                 this.contacted = true;
                 this.data.active = false;
 
-                this.handEl.setAttribute('animation__color', {
-                    property: 'material.color',
-                    to: '#f00',
-                    dur: 500,
-                    easing: 'linear'
-                });
-                this.handEl.setAttribute('animation__position', {
-                    property: 'object3D.position.y',
-                    to: '0',
-                    dur: 2000,
-                    easing: 'linear'
-                });
-                this.textEl.setAttribute('animation__color', {
-                    property: 'color',
-                    from: '#700',
-                    to: '#f00',
-                    dur: 1000,
-                    easing: 'linear'
-                });
-                this.textEl.setAttribute('animation__opacity', 'property: opacity; from: 0; to: 1; dur: 250; easing: linear');
+                this.fadeHand('#700', '#F00', 'Too late!');
 
-                this.faceEl.setAttribute('src', `#sad-${Math.floor(Math.random() * 3) + 1}`);
+                this.setFace('sad', 3);
                 this.el.emit('removeFanboy', { emitLaneAvailable: true });
-
-                this.textEl.setAttribute('value', 'Too late!');
             } else {
                 this.faceEl.setAttribute('src', `#worried-${Math.floor(Math.random() * 3) + 1}`);
                 this.timeLeft = 2000;
                 this.worried = true;
             }
         }
+    },
+
+    fadeHand: function(from, to, text) {
+        this.handEl.setAttribute('animation__color', {
+            property: 'material.color',
+            to,
+            dur: 500,
+            easing: 'linear'
+        });
+        this.handEl.setAttribute('animation__position', {
+            property: 'object3D.position.y',
+            to: '0',
+            dur: 2000,
+            easing: 'linear'
+        });
+        this.textEl.setAttribute('animation__color', {
+            property: 'color',
+            from,
+            to,
+            dur: 1000,
+            easing: 'linear'
+        });
+        this.textEl.setAttribute('animation__opacity', 'property: opacity; from: 0; to: 1; dur: 250; easing: linear');
+        this.handEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 300; easing: linear');
+
+        this.textEl.setAttribute('value', text);
+    },
+
+    setFace: function(id, no) {
+        this.faceEl.setAttribute('src', `#${id}-${Math.floor(Math.random() * no) + 1}`);
+    },
+
+    setupDebugContact: function() {
+        const { debugContactApproved } = this.data;
+        setTimeout(() => {
+            const playerHand = document.createElement('a-entity');
+            playerHand.classList.add(this.data.hand === 'left' ? 'right' : 'left');
+            playerHand.classList.add(debugContactApproved ? this.data.type : `not-` + this.data.type);
+
+            this.el.emit('contact', {
+                playerHand,
+                velocity: 5,
+            });
+        }, 3000);
     }
 });
