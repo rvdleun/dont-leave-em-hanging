@@ -58,10 +58,19 @@ AFRAME.registerComponent('button', {
     },
 
     fadeColorTo: function(color) {
-        console.log('Fading to', color);
-
-        const animation = `dur: 250; easing: linear; property: color; to: ${color}`;
-        this.borderPlaneEl.setAttribute('animation', animation);
-        this.textEl.setAttribute('animation', animation);
+        const animation = {
+            dur: 250,
+            easing: 'linear',
+            to: color,
+            type: 'color'
+        };
+        this.borderPlaneEl.setAttribute('animation', {
+            ...animation,
+            property: 'components.material.material.color',
+        });
+        this.textEl.setAttribute('animation', {
+            ...animation,
+            property: 'color'
+        });
     }
 });

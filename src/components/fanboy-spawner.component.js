@@ -49,8 +49,6 @@ AFRAME.registerComponent('fanboy-spawner', {
             src: '#audience',
             volume: .1,
         });
-
-        this.nextSpawn = 0;
     },
 
     update: function() {
@@ -75,6 +73,8 @@ AFRAME.registerComponent('fanboy-spawner', {
             }
             this.updateLaneVolume();
         }
+
+        this.nextSpawn = 100;
     },
 
     tick: function(time, delta) {

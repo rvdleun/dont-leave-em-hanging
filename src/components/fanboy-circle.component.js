@@ -18,9 +18,11 @@ AFRAME.registerComponent('fanboy-circle', {
         const { distance, enabled, noFanboys, radius } = this.data;
 
         if (!enabled) {
-            this.fanboys.forEach(fanboy => {
-                fanboy.emit('fadeHand', { from: '#fff', to: '#fff', text: '' });
-                fanboy.emit('removeFanboy');
+            this.fanboys.forEach((fanboy, index) => {
+                setTimeout(() => {
+                    fanboy.emit('fadeHand', { from: '#fff', to: '#fff', text: '' });
+                    fanboy.emit('removeFanboy');
+                }, index * 25);
             });
             return;
         }

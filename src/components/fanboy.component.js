@@ -76,7 +76,7 @@ AFRAME.registerComponent('fanboy', {
             this.removing = true;
             const { lane } = this.data;
 
-            this.faceEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 1000; easing: linear');
+            this.faceEl.setAttribute('animation', 'property: components.material.material.opacity; from: 1; to: 0; dur: 1000; easing: linear');
             this.textEl.setAttribute('animation__opacity_gone', 'property: opacity; from: 1; to: 0; dur: 250; delay: 1000; easing: linear');
 
             setTimeout(() => {
@@ -100,9 +100,12 @@ AFRAME.registerComponent('fanboy', {
         this.ready = false;
         this.worried = false;
 
+        /**
+         * Setup face
+         */
         const face = document.createElement('a-plane');
         face.setAttribute('animation', {
-            property: 'opacity',
+            property: 'components.material.material.opacity',
             from: 0,
             to: 1
         });
@@ -117,13 +120,14 @@ AFRAME.registerComponent('fanboy', {
             alphaTest: .5,
             shader: 'flat',
         });
-        face.setAttribute('opacity', '0');
         face.setAttribute('position', '0 .2 0');
         face.setAttribute('scale', '.25 .25 .25');
         face.setAttribute('transparent', 'true');
-
         this.el.appendChild(face);
 
+        /**
+         * Setup hand
+         */
         const handEl = document.createElement('a-plane');
         const xUpdate = hand === 'left' ? -1 : 1;
         const handPosition = {
@@ -133,14 +137,14 @@ AFRAME.registerComponent('fanboy', {
         };
         const handRotation = Math.random() * 40 * xUpdate;
         handEl.setAttribute('animation', {
-            property: 'opacity',
+            property: 'components.material.material.opacity',
             delay: 250,
             from: 0,
             to: 1
         });
         handEl.setAttribute('animation__rotation', {
-            property: 'rotation',
-            to: `0 0 ${Math.random() * 40 * xUpdate + (Math.random() * 1)}`,
+            property: 'object3D.rotation.z',
+            to: Math.random() * 40 * xUpdate + (Math.random() * 1),
             dir: 'alternate',
             dur: 250 + (Math.random() * 250),
             loop: true,
@@ -257,10 +261,11 @@ AFRAME.registerComponent('fanboy', {
 
     fadeHand: function(from, to, text) {
         this.handEl.setAttribute('animation__color', {
-            property: 'material.color',
+            property: 'components.material.material.color',
             to,
             dur: 500,
-            easing: 'linear'
+            easing: 'linear',
+            type: 'color'
         });
         this.handEl.setAttribute('animation__position', {
             property: 'object3D.position.y',
@@ -273,10 +278,11 @@ AFRAME.registerComponent('fanboy', {
             from,
             to,
             dur: 1000,
-            easing: 'linear'
+            easing: 'linear',
+            type: 'color'
         });
         this.textEl.setAttribute('animation__opacity', 'property: opacity; from: 0; to: 1; dur: 250; easing: linear');
-        this.handEl.setAttribute('animation', 'property: opacity; from: 1; to: 0; dur: 300; easing: linear');
+        this.handEl.setAttribute('animation', 'property: components.material.material.opacity; from: 1; to: 0; dur: 300; easing: linear');
 
         this.textEl.setAttribute('value', text);
     },
