@@ -22,6 +22,7 @@ AFRAME.registerComponent('fanboy', {
             this.contacted = true;
 
             const { playerHand, velocity } = e.detail;
+            const { score } = this.el.sceneEl.systems;
 
             const rightHand = !playerHand.classList.contains(this.data.hand);
             const rightType = playerHand.classList.contains(this.data.type);
@@ -33,12 +34,16 @@ AFRAME.registerComponent('fanboy', {
             let text = '';
             if (!rightHand) {
                 text = 'Wrong hand';
+                score.addToScore(rightType && rightVelocity ? 50 : 15, true);
             } else if (!rightType) {
                 text = (this.data.type === 'hand' ? 'High five' : 'Fist bump') + '\nrequested';
+                score.addToScore(25, true);
             } else if(!rightVelocity) {
                 text = (this.data.type === 'hand' ? 'Too slow' : 'Too fast');
+                score.addToScore(25, true);
             } else {
                 text = approvedText[Math.floor(Math.random() * approvedText.length)];
+                score.addToScore(100, true);
             }
 
             this.handEl.emit('playSound');
@@ -251,6 +256,7 @@ AFRAME.registerComponent('fanboy', {
 
                 this.setFace('sad', 3);
                 this.el.emit('removeFanboy', { emitLaneAvailable: true });
+                this.el.sceneEl.systems.score.addToScore(-50);
             } else {
                 this.faceEl.setAttribute('src', `#worried-${Math.floor(Math.random() * 3) + 1}`);
                 this.timeLeft = 2000;

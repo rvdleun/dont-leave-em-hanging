@@ -12,6 +12,8 @@ AFRAME.registerComponent('button-start', {
             fanboyCircle.setAttribute('fanboy-circle', 'enabled', false);
             game.setAttribute('game', 'enabled', true);
             titleScreen.setAttribute('title-screen', 'visible', false);
+
+            this.el.sceneEl.systems.score.setScore(0);
         }
     }
 });
