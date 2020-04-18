@@ -13,3 +13,4 @@ import './components/music-game.component';
 import './components/player-hand.component';
 import './components/score.component';
 import './components/title-screen.component';
+import './components/tutorial.component';

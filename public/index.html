@@ -2,6 +2,11 @@
 <head>
 </head>
 <body>
+<style>
+    body {
+        color: #fa0;
+    }
+</style>
 <a-scene physics="debug: false; gravity: 0">
     <a-assets>
         <audio id="applause" src="assets/sounds/applause.wav" preload="auto"></audio>
@@ -37,7 +42,7 @@
         <a-entity id="leftHand" cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>
             <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
-        <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
+        <a-entity id="rightHand" cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
             <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
     </a-entity>
@@ -50,12 +55,12 @@
         <a-ring color="#fff" position="0 0.05 0" rotation="90 90 0" scale=".85 .85 .85" side="double" radius-outer="1.1" theta-length="5"></a-ring>
     </a-entity>
 
-    <a-entity id="game" game="duration: 60000; enabled: false; radius: 360">
+    <a-entity id="game" game="duration: 25000; enabled: false; radius: 360">
         <a-entity id="spawner" position="0 1.3 0" fanboy-spawner="enabled: false"></a-entity>
         <a-ring id="timer" color="#fff" position="0 0.05 0" rotation="90 90 0" scale=".85 .85 .85" side="double" radius-outer="1.1" theta-length="5"></a-ring>
         <a-entity id="scores">
             <a-entity>
-                <a-entity id="score-front" position="0 2.8 -4" scale="10 10 10" score text="align: center; font: mozillavr"></a-entity>
+                <a-entity id="score-front" position="0 2.8 -4" scale="0 0 0" score text="align: center; font: mozillavr"></a-entity>
             </a-entity>
             <a-entity rotation="0 90 0">
                 <a-entity position="0 2.8 -4" scale="10 10 10" score text="align: center; font: mozillavr"></a-entity>
@@ -85,6 +90,21 @@
     <a-entity id="ambience">
         <a-entity id="ambience-applause" sound="on: playSound; positional: false; src: #applause"></a-entity>
         <a-entity music-game="playing: false" sound="positional: false; src: #game-music"></a-entity>
+    </a-entity>
+
+    <a-entity id="tutorial" position="0 1.3 .66" rotation="0 180 0">
+        <a-entity tutorial></a-entity>
+        <a-entity position="0 3.25 -2.5" scale=".85 .85 .85">
+            <a-plane position="0 -.875 -.1" scale="6 2.5 1" color="black"></a-plane>
+            <a-plane position="0 -.875 -.11" scale="6.1 2.6 1" color="white"></a-plane>
+            <a-text position="0 0 0" value="The goal is to give as many high fives" align="center"></a-text>
+            <a-text position="0 -.25 0" value="and fist bumps as humanly possible" align="center"></a-text>
+            <a-text position="0 -.75 0" value="- Mirror the recipient hand." align="center"></a-text>
+            <a-text position="0 -1 0" value="- Perform a high five by releasing them" align="center"></a-text>
+            <a-text position="0 -1.25 0" value="- Create a fist-bump by holding the trigger and grip." align="center"></a-text>
+            <a-text position="0 -1.5 0" value="- Use full force when giving a high five." align="center"></a-text>
+            <a-text position="0 -1.75 0" value="- Be more careful with fist bumps." align="center"></a-text>
+        </a-entity>
     </a-entity>
 
     <!--<a-entity>-->

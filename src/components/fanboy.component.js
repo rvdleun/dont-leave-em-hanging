@@ -1,4 +1,22 @@
-const approvedText = ['YEAH!', 'WOO!', 'NICE!', 'COOL!', 'AWESOME!'];
+AFRAME.registerSystem('fanboy', {
+    approvedText: ['YEAH!', 'WOO!', 'NICE!', 'COOL!', 'AWESOME!'],
+
+    analyzeContact: function(e, data) {
+        const { playerHand, velocity } = e.detail;
+        const rightHand = !playerHand.classList.contains(data.hand);
+        const rightType = playerHand.classList.contains(data.type);
+        const rightVelocity =
+            (data.type === 'hand' && velocity > .2) ||
+            (data.type === 'fist' && velocity < .2);
+        const approved = rightHand && rightType && rightVelocity;
+
+        return { approved, rightHand, rightType, rightVelocity };
+    },
+
+    getApprovalText: function() {
+        return this.approvedText[Math.floor(Math.random() * this.approvedText.length)];
+    }
+});
 
 AFRAME.registerComponent('fanboy', {
     schema: {
@@ -21,15 +39,8 @@ AFRAME.registerComponent('fanboy', {
 
             this.contacted = true;
 
-            const { playerHand, velocity } = e.detail;
+            const { approved, rightHand, rightType, rightVelocity } = this.system.analyzeContact(e, this.data);
             const { score } = this.el.sceneEl.systems;
-
-            const rightHand = !playerHand.classList.contains(this.data.hand);
-            const rightType = playerHand.classList.contains(this.data.type);
-            const rightVelocity =
-                (this.data.type === 'hand' && velocity > .2) ||
-                (this.data.type === 'fist' && velocity < .2);
-            const approved = rightHand && rightType && rightVelocity;
 
             let text = '';
             if (!rightHand) {
@@ -42,7 +53,7 @@ AFRAME.registerComponent('fanboy', {
                 text = (this.data.type === 'hand' ? 'Too slow' : 'Too fast');
                 score.addToScore(25, true);
             } else {
-                text = approvedText[Math.floor(Math.random() * approvedText.length)];
+                text = this.system.getApprovalText();
                 score.addToScore(100, true);
             }
 
@@ -100,7 +111,7 @@ AFRAME.registerComponent('fanboy', {
     },
 
     init: function() {
-        const { debugContact, hand, lane, type } = this.data;
+        const { debugContact, lane } = this.data;
         this.timeLeft = 3000;
         this.ready = false;
         this.worried = false;
@@ -134,48 +145,12 @@ AFRAME.registerComponent('fanboy', {
          * Setup hand
          */
         const handEl = document.createElement('a-plane');
-        const xUpdate = hand === 'left' ? -1 : 1;
-        const handPosition = {
-            x: (.1 + (Math.random() / 10)) * -xUpdate,
-            y: .1 + (type === 'hand' ? .25 : 0),
-            z: .05
-        };
-        const handRotation = Math.random() * 40 * xUpdate;
-        handEl.setAttribute('animation', {
-            property: 'components.material.material.opacity',
-            delay: 250,
-            from: 0,
-            to: 1
-        });
-        handEl.setAttribute('animation__rotation', {
-            property: 'object3D.rotation.z',
-            to: Math.random() * 40 * xUpdate + (Math.random() * 1),
-            dir: 'alternate',
-            dur: 250 + (Math.random() * 250),
-            loop: true,
-        });
-        handEl.setAttribute('material', {
-            alphaTest: .5,
-            shader: 'flat',
-        });
-        handEl.setAttribute('opacity', '0');
-        handEl.setAttribute('position', handPosition);
-        handEl.setAttribute('rotation', {
-            x: 0,
-            y: 0,
-            z: handRotation,
-        });
-        handEl.setAttribute('scale', {
-            x: .2 * xUpdate,
-            y: .2,
-            z: .1
-        });
         handEl.setAttribute('sound', {
             on: 'playSound',
             src: `#high-five-${Math.floor(Math.random() * 3) + 1}`,
             volume: 1,
         });
-        handEl.setAttribute('src', `#${type}`);
+        handEl.setAttribute('opacity', '0');
         handEl.setAttribute('transparent', 'false');
         this.el.appendChild(handEl);
 
@@ -183,16 +158,6 @@ AFRAME.registerComponent('fanboy', {
         textEl.setAttribute('align', 'center');
         textEl.setAttribute('font', 'mozillavr');
         textEl.setAttribute('opacity', '1');
-        textEl.setAttribute('position', {
-            x: handPosition.x,
-            y: handPosition.y,
-            z: handPosition.z + .05,
-        });
-        textEl.setAttribute('rotation', {
-            x: 0,
-            y: 0,
-            z: -30 + (Math.random() * 60),
-        });
         textEl.setAttribute('animation__scale', {
             property: 'scale',
             from: '.225 .225 .1',
@@ -217,6 +182,8 @@ AFRAME.registerComponent('fanboy', {
         this.handEl = handEl;
         this.textEl = textEl;
 
+        this.setupHand();
+
         if (Math.random() <= .005) {
             face.setAttribute('src', `#waiting-vincent`);
         } else {
@@ -232,11 +199,15 @@ AFRAME.registerComponent('fanboy', {
         }
     },
 
-    update: function() {
-        const { distance, distanceDuration } = this.data;
+    update: function(oldData) {
+        const { distance, distanceDuration, hand, type } = this.data;
 
         if (!!distance) {
             this.el.setAttribute('animation', `property: object3D.position.z; to: ${distance}; dur: ${distanceDuration}`);
+        }
+
+        if (oldData.hand !== hand || oldData.type !== type) {
+            this.setupHand();
         }
     },
 
@@ -309,5 +280,57 @@ AFRAME.registerComponent('fanboy', {
                 velocity: 5,
             });
         }, 3000);
+    },
+
+    setupHand: function() {
+        const { hand, type } = this.data;
+        const { handEl, textEl } = this;
+
+        const xUpdate = hand === 'left' ? -1 : 1;
+        const handPosition = {
+            x: (.1 + (Math.random() / 10)) * -xUpdate,
+            y: .1 + (type === 'hand' ? .25 : 0),
+            z: .05
+        };
+        const handRotation = Math.random() * 40 * xUpdate;
+        handEl.setAttribute('animation', {
+            property: 'components.material.material.opacity',
+            dur: Math.floor(Math.random() * 100) + 1000,
+            to: 1
+        });
+        handEl.setAttribute('animation__rotation', {
+            property: 'object3D.rotation.z',
+            to: Math.random() * 40 * xUpdate + (Math.random() * 1),
+            dir: 'alternate',
+            dur: 250 + (Math.random() * 250),
+            loop: true,
+        });
+        handEl.setAttribute('material', {
+            alphaTest: .5,
+            shader: 'flat',
+        });
+        handEl.setAttribute('position', handPosition);
+        handEl.setAttribute('rotation', {
+            x: 0,
+            y: 0,
+            z: handRotation,
+        });
+        handEl.setAttribute('scale', {
+            x: .2 * xUpdate,
+            y: .2,
+            z: .1
+        });
+        handEl.setAttribute('src', `#${type}`);
+
+        textEl.setAttribute('position', {
+            x: handPosition.x,
+            y: handPosition.y,
+            z: handPosition.z + .05,
+        });
+        textEl.setAttribute('rotation', {
+            x: 0,
+            y: 0,
+            z: -30 + (Math.random() * 60),
+        });
     }
 });

@@ -10,7 +10,7 @@ AFRAME.registerSystem('score', {
 
     setScore: function(score, animate) {
         this.score = Math.max(0, score);
-        this.scoreString = score.toString().padStart(6, '0');
+        this.scoreString = this.score.toString().padStart(6, '0');
         this.showScores(animate);
     },
 
