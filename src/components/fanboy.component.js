@@ -61,11 +61,13 @@ AFRAME.registerComponent('fanboy', {
             if (approved) {
                 this.fadeHand('#0f0', '#0f0', text);
                 this.setFace('approved', 5);
+                this.playReactionSound('approved', 9);
 
                 this.faceEl.setAttribute('animation__ascend', 'property: object3D.position.y; to: 3; dur: 2000');
             } else {
                 this.fadeHand('#f00', '#f00', text);
                 this.setFace('not-approved', 3);
+                this.playReactionSound('not-approved', 5);
             }
 
             setTimeout(() => {
@@ -138,6 +140,10 @@ AFRAME.registerComponent('fanboy', {
         });
         face.setAttribute('position', '0 .2 0');
         face.setAttribute('scale', '.25 .25 .25');
+        face.setAttribute('sound', {
+            on: 'playSound',
+            volume: 1,
+        });
         face.setAttribute('transparent', 'true');
         this.el.appendChild(face);
 
@@ -224,12 +230,13 @@ AFRAME.registerComponent('fanboy', {
                 this.data.active = false;
 
                 this.fadeHand('#700', '#F00', 'Too late!');
-
                 this.setFace('sad', 3);
+                this.playReactionSound('sad', 5);
                 this.el.emit('removeFanboy', { emitLaneAvailable: true });
                 this.el.sceneEl.systems.score.addToScore(-50);
             } else {
-                this.faceEl.setAttribute('src', `#worried-${Math.floor(Math.random() * 3) + 1}`);
+                this.setFace('worried', 3);
+                this.playReactionSound('worried', 6);
                 this.timeLeft = 2000;
                 this.worried = true;
             }
@@ -262,6 +269,11 @@ AFRAME.registerComponent('fanboy', {
         this.handEl.setAttribute('animation', 'property: components.material.material.opacity; from: 1; to: 0; dur: 300; easing: linear');
 
         this.textEl.setAttribute('value', text);
+    },
+
+    playReactionSound: function(id, no) {
+        this.faceEl.setAttribute('sound', 'src', `#reaction-${id}-${Math.floor(Math.random() * no) + 1}`);
+        this.faceEl.emit('playSound');
     },
 
     setFace: function(id, no) {
