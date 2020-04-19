@@ -2,6 +2,7 @@ const NO_LANES = 6;
 const LANE_DIFF = 360 / NO_LANES;
 AFRAME.registerComponent('fanboy-spawner', {
     schema: {
+        camera: { type: 'selector', default: '[camera]' },
         enabled: { type: 'boolean', default: false },
         radius: { type: 'number', default: 180 },
     },
@@ -52,8 +53,8 @@ AFRAME.registerComponent('fanboy-spawner', {
         });
     },
 
-    update: function() {
-        if (!this.enabled) {
+    update: function(oldData) {
+        if (!this.data.enabled) {
             for(let i = 0; i < NO_LANES; i++) {
                 this.lanes[i].forEach(fanboyEl => {
                     fanboyEl.setAttribute('fanboy', {
@@ -73,6 +74,8 @@ AFRAME.registerComponent('fanboy-spawner', {
                 this.lanes[i] = [];
             }
             this.updateLaneVolume();
+        } else if(oldData.enabled === false) {
+            this.el.object3D.position.setY(this.data.camera.object3D.position.y - .3);
         }
 
         this.nextSpawn = 100;
