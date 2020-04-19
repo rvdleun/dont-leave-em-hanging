@@ -4,6 +4,7 @@ AFRAME.registerComponent('fanboy-spawner', {
     schema: {
         camera: { type: 'selector', default: '[camera]' },
         enabled: { type: 'boolean', default: false },
+        type: { type: 'string', default: null },
         radius: { type: 'number', default: 180 },
     },
 
@@ -113,7 +114,7 @@ AFRAME.registerComponent('fanboy-spawner', {
             distanceDuration: 5000,
             hand: Math.random() < .5 ? 'left': 'right',
             lane,
-            type: Math.random() < .5 ? 'fist' : 'hand',
+            type: this.data.type ? this.data.type : Math.random() < .5 ? 'fist' : 'hand',
         });
         fanboyEl.setAttribute('position', '0 0 -5');
         laneEl.appendChild(fanboyEl);

@@ -3,6 +3,7 @@ import 'aframe-physics-system/dist/aframe-physics-system.min';
 import 'aframe-text-geometry-component';
 
 import './components/button.component';
+import './components/button-difficulty.component';
 import './components/button-duration.component';
 import './components/button-radius.component';
 import './components/button-start.component';

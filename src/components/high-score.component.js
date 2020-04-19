@@ -1,5 +1,6 @@
 AFRAME.registerComponent('high-score', {
     schema: {
+        difficulty: { type: 'string' },
         duration: { type: 'string' },
         radius: { type: 'string' },
     },
@@ -40,12 +41,12 @@ AFRAME.registerComponent('high-score', {
     },
 
     generateKey: function() {
-        const { duration, radius } = this.data;
+        const { difficulty, duration, radius } = this.data;
 
-        if (!duration || !radius) {
+        if (!difficulty || !duration || !radius) {
             return null;
         }
 
-        return `${this.STORAGE_KEY}-${duration}-${radius}`;
+        return `${this.STORAGE_KEY}-${difficulty}-${duration}-${radius}`;
     }
 });

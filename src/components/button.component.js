@@ -38,7 +38,7 @@ AFRAME.registerComponent('button', {
         textEl.setAttribute('color', color);
         textEl.setAttribute('font', 'mozillavr');
         textEl.setAttribute('position', '0 0.2 .1');
-        textEl.setAttribute('scale', '2 2 2');
+        textEl.setAttribute('scale', '1.8 1.8 1.8');
         this.el.appendChild(textEl);
 
         this.el.appendChild(backgroundPlaneEl);
