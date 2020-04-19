@@ -29,7 +29,7 @@ AFRAME.registerComponent('button', {
 
         const borderPlaneEl = document.createElement('a-plane');
         borderPlaneEl.setAttribute('color', color);
-        borderPlaneEl.setAttribute('position', '0 0 -.1');
+        borderPlaneEl.setAttribute('position', '0 0 -.000001');
         borderPlaneEl.setAttribute('scale', '2.75 1.1 1.1');
         this.el.appendChild(borderPlaneEl);
 
@@ -39,7 +39,6 @@ AFRAME.registerComponent('button', {
         textEl.setAttribute('font', 'mozillavr');
         textEl.setAttribute('position', '0 0.2 .1');
         textEl.setAttribute('scale', '2 2 2');
-        textEl.setAttribute('value', text);
         this.el.appendChild(textEl);
 
         this.el.appendChild(backgroundPlaneEl);
@@ -55,6 +54,10 @@ AFRAME.registerComponent('button', {
                 }
             });
         });
+    },
+
+    update: function() {
+        this.textEl.setAttribute('value', this.data.text);
     },
 
     fadeColorTo: function(color) {

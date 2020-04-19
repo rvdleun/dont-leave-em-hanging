@@ -3,6 +3,7 @@ const LANE_DIFF = 360 / NO_LANES;
 AFRAME.registerComponent('fanboy-spawner', {
     schema: {
         enabled: { type: 'boolean', default: false },
+        radius: { type: 'number', default: 180 },
     },
 
     events: {
@@ -85,7 +86,7 @@ AFRAME.registerComponent('fanboy-spawner', {
         this.nextSpawn-=delta;
 
         if (this.nextSpawn < 0) {
-            this.spawnFanboy(Math.floor(Math.random() * NO_LANES));
+            this.spawnFanboy(Math.floor(Math.random() * NO_LANES * (this.data.radius / 360)));
             this.nextSpawn = Math.random() * 1200;
         }
     },
