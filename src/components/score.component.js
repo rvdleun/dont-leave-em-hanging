@@ -1,6 +1,7 @@
 AFRAME.registerSystem('score', {
+    modifier: 1,
     score: 0,
-    scoreString: '000000',
+    scoreString: '0000000',
     scores: [],
 
     register: function(score) {
@@ -10,12 +11,12 @@ AFRAME.registerSystem('score', {
 
     setScore: function(score, animate) {
         this.score = Math.max(0, score);
-        this.scoreString = this.score.toString().padStart(6, '0');
+        this.scoreString = this.score.toString().padStart(7, '0');
         this.showScores(animate);
     },
 
     addToScore: function(diff, animate) {
-        this.setScore(this.score + diff, animate);
+        this.setScore(this.score + (diff * Math.floor(this.modifier)), animate);
     },
 
     showScores(animate) {
@@ -23,7 +24,17 @@ AFRAME.registerSystem('score', {
     },
 
     showScore(component, animate) {
-        component.showScore(this.scoreString, animate);
+        component.showScore(`${this.scoreString} (${Math.floor(this.modifier).toString()}X)`, animate);
+    },
+
+    adjustModifier: function(diff) {
+        this.modifier = Math.min(4, Math.max(1, this.modifier + diff));
+        this.showScores();
+    },
+
+    resetModifier: function() {
+        this.modifier = 1;
+        this.showScores();
     }
 });
 

@@ -46,16 +46,25 @@ AFRAME.registerComponent('fanboy', {
             let text = '';
             if (!rightHand) {
                 text = 'Wrong hand';
-                score.addToScore(rightType && rightVelocity ? 50 : 15, true);
+                score.addToScore(15, true);
+
+                if (rightType && rightVelocity) {
+                    score.addToScore(35, true);
+                } else {
+                    score.resetModifier();
+                }
             } else if (!rightType) {
                 text = (this.data.type === 'hand' ? 'High five' : 'Fist bump') + '\nrequested';
                 score.addToScore(25, true);
+                score.resetModifier();
             } else if(!rightVelocity) {
                 text = (this.data.type === 'hand' ? 'Too slow' : 'Too fast');
                 score.addToScore(25, true);
+                score.resetModifier();
             } else {
                 text = this.system.getApprovalText();
                 score.addToScore(100, true);
+                score.adjustModifier(.25);
             }
 
             this.handEl.emit('playSound');
@@ -248,6 +257,7 @@ AFRAME.registerComponent('fanboy', {
                 this.playReactionSound('sad', 5);
                 this.el.emit('removeFanboy', { emitLaneAvailable: true });
                 this.el.sceneEl.systems.score.addToScore(-50);
+                this.el.sceneEl.systems.score.resetModifier();
             } else {
                 this.setFace('worried', 3);
                 this.playReactionSound('worried', 6);

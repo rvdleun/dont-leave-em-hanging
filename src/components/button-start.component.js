@@ -13,6 +13,7 @@ AFRAME.registerComponent('button-start', {
             game.setAttribute('game', 'enabled', true);
             titleScreen.setAttribute('title-screen', 'visible', false);
 
+            this.el.sceneEl.systems.score.resetModifier();
             this.el.sceneEl.systems.score.setScore(0);
         }
     }

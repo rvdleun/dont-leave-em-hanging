@@ -36,7 +36,7 @@ AFRAME.registerComponent('high-score', {
             score = '0';
         }
 
-        this.el.setAttribute('value', `High score: ${score.padStart(6, '0')}`);
+        this.el.setAttribute('value', `High score: ${score.padStart(7, '0')}`);
     },
 
     generateKey: function() {
