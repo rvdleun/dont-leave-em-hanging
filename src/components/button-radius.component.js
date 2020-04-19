@@ -18,8 +18,8 @@ AFRAME.registerComponent('button-radius', {
 
     STORAGE_KEY: 'dleh.settings-radius',
     radiuses: [
-        { description: '180', value: '180' },
-        { description: '360', value: '360', default: true },
+        { description: '180', value: '180', default: true },
+        { description: '360', value: '360' },
     ],
     selectedRadius: null,
 
