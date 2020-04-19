@@ -30,5 +30,9 @@ AFRAME.registerComponent('title-screen', {
             to: visible ? '1.25 1.25 1.25' : '0 0 0',
             dur: 1000,
         })
+
+        setTimeout(() => {
+            this.el.setAttribute('visible', visible);
+        }, visible ? 0 : 3000);
     }
 });
