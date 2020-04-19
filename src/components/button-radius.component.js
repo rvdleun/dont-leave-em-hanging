@@ -1,5 +1,6 @@
 AFRAME.registerComponent('button-radius', {
     schema: {
+        highScore: { type: 'selector', default: '[high-score]' },
         spawner: { type: 'selector', default: '[fanboy-spawner]' }
     },
 
@@ -15,7 +16,7 @@ AFRAME.registerComponent('button-radius', {
         }
     },
 
-    STORAGE_KEY: 'settings-radius',
+    STORAGE_KEY: 'dleh.settings-radius',
     radiuses: [
         { description: '180', value: '180' },
         { description: '360', value: '360', default: true },
@@ -32,9 +33,10 @@ AFRAME.registerComponent('button-radius', {
             settings = this.radiuses.find(search => search.default);
         }
 
-        this.data.spawner.setAttribute('fanboy-spawner', 'radiuses', settings.value);
+        this.data.highScore.setAttribute('high-score', 'radius', settings.value);
+        this.data.spawner.setAttribute('fanboy-spawner', 'radius', settings.value);
         this.el.setAttribute('button', 'text', settings.description );
         this.selectedRadius = settings;
-        window.localStorage.setItem(this.STORAGE_KEY, radius);
+        window.localStorage.setItem(this.STORAGE_KEY, settings.value);
     }
 });

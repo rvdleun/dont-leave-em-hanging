@@ -93,19 +93,15 @@ AFRAME.registerComponent('tutorial', {
 
     showStep: function() {
         const step = this.getCurrentStep();
-        console.log('step', step);
         this.teacher.setAttribute('fanboy', step);
     },
 
     showText: function(text, color) {
-        console.log('Showing text', text, color);
-
         this.text.setAttribute('color', color);
         this.text.setAttribute('value', text);
 
         clearTimeout(this.textTimeout);
         this.textTimeout = setTimeout(() => {
-            console.log('Clearing text');
             this.text.setAttribute('value', '');
         }, 3000)
     }

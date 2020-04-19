@@ -1,6 +1,7 @@
 AFRAME.registerComponent('button-duration', {
     schema: {
-        game: { type: 'selector', default: '[game]' }
+        game: { type: 'selector', default: '[game]' },
+        highScore: { type: 'selector', default: '[high-score]' },
     },
 
     events: {
@@ -15,7 +16,7 @@ AFRAME.registerComponent('button-duration', {
         }
     },
 
-    STORAGE_KEY: 'settings-duration',
+    STORAGE_KEY: 'dleh.settings-duration',
     durations: [
         { description: '1min', value: '60000' },
         { description: '3min', value: '180000' },
@@ -29,12 +30,12 @@ AFRAME.registerComponent('button-duration', {
     },
 
     setDuration: function(duration) {
-        console.log(duration);
         let settings = this.durations.find(search => search.value === duration);
         if (!settings) {
             settings = this.durations.find(search => search.default);
         }
 
+        this.data.highScore.setAttribute('high-score', 'duration', settings.value);
         this.data.game.setAttribute('game', 'duration', settings.value);
         this.el.setAttribute('button', 'text', settings.description );
         this.selectedDuration = settings;

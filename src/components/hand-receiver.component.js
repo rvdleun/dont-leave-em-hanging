@@ -20,9 +20,5 @@ AFRAME.registerComponent('hand-receiver', {
     tick: function(time, delta) {
         this.highlight-=delta;
         this.el.setAttribute('color', this.highlight < 0 ? 'blue' : 'yellow');
-
-        // const test = document.querySelector('#test');
-        // this.el.object3D.position.setY(test.object3D.position.y + 1.6);
-        // console.log(this.el.object3D.position.y);
     }
 });

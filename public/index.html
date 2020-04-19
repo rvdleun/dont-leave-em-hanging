@@ -98,7 +98,7 @@
         </a-entity>
     </a-entity>
 
-    <a-entity id="title-screen" position="0 1.6 -3" scale="1.25 1.25 1.25" title-screen="visible: true">
+    <a-entity id="title-screen" position="0 1.7 -3" scale="1.25 1.25 1.25" title-screen="visible: true">
         <a-entity id="logo" position="-1.5 2.5 0" rotation="15 0 0">
             <a-entity text-geometry="value: DON'T" material="color: white"></a-entity>
             <a-entity text-geometry="value: leave" position="2.1 .29 0" scale=".45 .45 .45" material="color: white"></a-entity>
@@ -106,7 +106,9 @@
             <a-entity text-geometry="value: HANGING" position="0 -.75 0" material="color: white"></a-entity>
         </a-entity>
 
-        <a-entity id="buttons" position="0 0 0">
+        <a-text id="high-score" high-score position="0 1.25 0" align="center" font="mozillavr"></a-text>
+
+        <a-entity id="buttons" position="0 -.35 0">
             <a-text value="Duration" position="-.6875 1.1 0" align="center" font="mozillavr" scale=".75 .75 .75"></a-text>
             <a-entity position="-0.6875 .55 0" button button-duration scale=".5 .5 .5"></a-entity>
 
@@ -131,8 +133,8 @@
             <a-text position="0 0 0" value="The goal is to give as many high fives" align="center"></a-text>
             <a-text position="0 -.25 0" value="and fist bumps as humanly possible" align="center"></a-text>
             <a-text position="0 -.75 0" value="- Mirror the recipient hand." align="center"></a-text>
-            <a-text position="0 -1 0" value="- Perform a high five by releasing them" align="center"></a-text>
-            <a-text position="0 -1.25 0" value="- Create a fist-bump by holding the trigger and grip." align="center"></a-text>
+            <a-text position="0 -1 0" value="- Create a fist-bump by holding the trigger and grip." align="center"></a-text>
+            <a-text position="0 -1.25 0" value="- Perform a high five by releasing them" align="center"></a-text>
             <a-text position="0 -1.5 0" value="- Use full force when giving a high five." align="center"></a-text>
             <a-text position="0 -1.75 0" value="- Be more careful with fist bumps." align="center"></a-text>
         </a-entity>

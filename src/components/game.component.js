@@ -4,6 +4,7 @@ AFRAME.registerComponent('game', {
         duration: { type: 'number', default: 60000 },
         enabled: { type: 'boolean', default: false },
         fanboyCircle: { type: 'selector', default: '[fanboy-circle] '},
+        highScore: { type: 'selector', default: '[high-score]' },
         musicGame: { type: 'selector', default: '[music-game]' },
         radius: { type: 'number', default: 360 },
         titleScreen: { type: 'selector', default: '[title-screen] '},
@@ -57,6 +58,9 @@ AFRAME.registerComponent('game', {
             to: .7,
         });
         this.data.applause.emit('playSound');
+        this.data.highScore.emit('updateHighScore', {
+            score: this.el.sceneEl.systems['score'].score
+        });
         this.data.musicGame.setAttribute('music-game', 'playing', false);
         this.spawner.setAttribute('fanboy-spawner', 'enabled', false);
 
