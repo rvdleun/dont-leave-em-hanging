@@ -14,6 +14,7 @@ import './components/game.component';
 import './components/hand-receiver.component';
 import './components/high-score.component';
 import './components/music-game.component';
+import './components/player-cursor.component';
 import './components/player-hand.component';
 import './components/score.component';
 import './components/title-screen.component';

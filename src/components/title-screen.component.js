@@ -8,7 +8,7 @@ AFRAME.registerComponent('title-screen', {
     update: function() {
         const { visible } = this.data;
 
-        document.querySelectorAll('[cursor]').forEach(cursor => cursor.setAttribute('raycaster', 'far', visible ? 1000 : 0));
+        document.querySelectorAll('[player-cursor]').forEach(cursor => cursor.setAttribute('player-cursor', 'enabled', visible));
 
         this.data.scoreFront.setAttribute('animation__visible', {
             delay: visible ? 0 : 1000,

@@ -63,11 +63,11 @@
         <img id="worried-3" src="assets/faces/worried-3.png" />
     </a-assets>
 
-    <a-entity id="player" cursor="rayOrigin: mouse" raycaster="objects: [data-raycastable]">
-        <a-entity id="leftHand" cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>
+    <a-entity id="player">
+        <a-entity id="leftHand" cursor player-cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>
             <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
-        <a-entity id="rightHand" cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
+        <a-entity id="rightHand" cursor player-cursor="active: true" raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
             <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
         </a-entity>
     </a-entity>
