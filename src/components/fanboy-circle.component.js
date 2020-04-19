@@ -46,6 +46,7 @@ AFRAME.registerComponent('fanboy-circle', {
                     canContact: false,
                     distance: -distance,
                     hand: Math.random() < .5 ? 'left': 'right',
+                    hasSound: false,
                     type: Math.random() < .5 ? 'fist' : 'hand',
                 });
                 fanboy.setAttribute('position', {

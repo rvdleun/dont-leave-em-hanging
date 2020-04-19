@@ -13,7 +13,7 @@ AFRAME.registerComponent('tutorial', {
             }
 
             const step = this.getCurrentStep();
-            const { rightHand, rightType, rightVelocity } = this.el.sceneEl.systems['fanboy'].analyzeContact(e, step);
+            const { approved, rightHand, rightType, rightVelocity } = this.el.sceneEl.systems['fanboy'].analyzeContact(e, step);
 
             if (!rightHand) {
                 this.showText('Use your other hand.', '#f00');
@@ -24,6 +24,18 @@ AFRAME.registerComponent('tutorial', {
             } else {
                 this.showText(this.el.sceneEl.systems['fanboy'].getApprovalText(), '#0f0');
                 this.nextStep();
+            }
+
+            if (approved) {
+                this.teacher.emit('playReactionSound', {
+                    id: 'approved',
+                    no: 9
+                });
+            } else {
+                this.teacher.emit('playReactionSound', {
+                    id: 'not-approved',
+                    no: 5
+                });
             }
 
             this.active = false;

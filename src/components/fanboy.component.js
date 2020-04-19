@@ -24,9 +24,10 @@ AFRAME.registerComponent('fanboy', {
         canContact: { type: 'boolean', default: true },
         debugContact: { type: 'boolean', default: false },
         debugContactApproved: { type: 'boolean', default: false },
-        distance: { type: 'number', default: null },
+        distance: { type: 'number', default: 0 },
         distanceDuration: { type: 'number', default: 5000 },
         hand: { type: 'string', default: 'right' },
+        hasSound: { type: 'boolean', default: true },
         lane: { type: 'number', default: -1 },
         type: { type: 'string', default: 'hand' },
     },
@@ -86,6 +87,11 @@ AFRAME.registerComponent('fanboy', {
             this.fadeHand(from, to, text);
         },
 
+        playReactionSound: function(e) {
+            const { id, no } = e.detail;
+            this.playReactionSound(id, no);
+        },
+
         removeFanboy: function(e) {
             if (this.removing) {
                 return;
@@ -113,7 +119,7 @@ AFRAME.registerComponent('fanboy', {
     },
 
     init: function() {
-        const { debugContact, lane } = this.data;
+        const { debugContact, hasSound, lane } = this.data;
         this.timeLeft = 3000;
         this.ready = false;
         this.worried = false;
@@ -140,24 +146,32 @@ AFRAME.registerComponent('fanboy', {
         });
         face.setAttribute('position', '0 .2 0');
         face.setAttribute('scale', '.25 .25 .25');
-        face.setAttribute('sound', {
-            on: 'playSound',
-            volume: 1,
-        });
         face.setAttribute('transparent', 'true');
+
+        if (hasSound) {
+            face.setAttribute('sound', {
+                on: 'playSound',
+                volume: .666,
+            });
+        }
+
         this.el.appendChild(face);
 
         /**
          * Setup hand
          */
         const handEl = document.createElement('a-plane');
-        handEl.setAttribute('sound', {
-            on: 'playSound',
-            src: `#high-five-${Math.floor(Math.random() * 3) + 1}`,
-            volume: 1,
-        });
         handEl.setAttribute('opacity', '0');
         handEl.setAttribute('transparent', 'false');
+
+        if (hasSound) {
+            handEl.setAttribute('sound', {
+                on: 'playSound',
+                src: `#high-five-${Math.floor(Math.random() * 3) + 1}`,
+                volume: 1,
+            });
+        }
+
         this.el.appendChild(handEl);
 
         const textEl = document.createElement('a-text');
