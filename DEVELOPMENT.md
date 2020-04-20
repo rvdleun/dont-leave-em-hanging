@@ -28,9 +28,9 @@ Granted, the project start out as a bit of a fun experiment, and then turned int
   * `worried`: The player is taking his time responding. Fanboy is getting worried.
 * A different high score is stored for every available permutation of the settings.
 
-#### Components
+### Components
 
-##### button
+#### button
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | backgroundColor | string | The background color | #000
@@ -41,7 +41,7 @@ This component will create a button via planes and a text primitive on top. It w
 
 It will listen to the `triggerdown` event on the hand-controls and emit a `click` event if the user is hovering over it.
 
-##### button-difficulty
+#### button-difficulty
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | highScore | selector | Selects the high score entity | [high-score]
@@ -49,7 +49,7 @@ It will listen to the `triggerdown` event on the hand-controls and emit a `click
 
 This component will set the right difficulty on the `fanboy-spawner` component. It stores the setting in the local storage and retrieves it on init.
 
-##### button-duration
+#### button-duration
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | game | selector | Selects the game entity | [game]
@@ -57,7 +57,7 @@ This component will set the right difficulty on the `fanboy-spawner` component. 
 
 This component will set the right difficulty on the `game` component. It stores the setting in the local storage and retrieves it on init.
 
-##### button-radius
+#### button-radius
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | highScore | selector | Selects the high score entity | [high-score]
@@ -65,7 +65,7 @@ This component will set the right difficulty on the `game` component. It stores 
 
 This component will set the right radius on the `fanboy-spawner` component. It stores the setting in the local storage and retrieves it on init.
 
-##### button-start
+#### button-start
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | fanboyCircle | selector | Selects the fanboy circle entity | [fanboy-circle]
@@ -74,7 +74,7 @@ This component will set the right radius on the `fanboy-spawner` component. It s
 
 When the user clicks on this button, it will disable the fanboy circle, enable the game and hide the title screen.
 
-##### fanboy
+#### fanboy
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | active | boolean | If the fanboy is active and can get disappointed | false |
@@ -92,7 +92,7 @@ This component is responsible for everything surrounding a single fanboy. It wil
 
 If `active` is set to true, a timer will start in which the user has to respond. If the time runs out, he will disappear and 
 
-##### fanboy-circle
+#### fanboy-circle
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | distance | number | The distance from the center | 3.5 |
@@ -102,7 +102,7 @@ If `active` is set to true, a timer will start in which the user has to respond.
 
 This component will show a number of fanboys around the player.
 
-##### fanboy-spawner
+#### fanboy-spawner
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | camera | selector | Selects the camera entity | [camera] |
@@ -117,7 +117,7 @@ The area around the player is divided into six lanes from which they'll spawn. A
 When disabled, it will set an approved look on every fanboy and shortly thereafter make them disappear.
 
 
-##### game
+#### game
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | applause | selector | Selects the applause entity | #ambience-applause |
@@ -134,10 +134,10 @@ When it is enabled, it will enable the fanboy spawner and start an animation in 
 
 When the game ends, it will disable the fanboy spawner, end the music, play an applause sound and update the high score. After five seconds, it will make the title screen appear again.
 
-##### hand-receiver
+#### hand-receiver
 This component is attached to the hand of a fanboy and will track when the player's hand collides with it. When so, it will emit a `contact` event with the playerHand's entity and the velocity it was travelling at the time.
 
-##### high-score
+#### high-score
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | difficulty | string | The current difficulty |  |
@@ -148,7 +148,7 @@ This component is responsible for keeping track for displaying and storing the c
 
 The high score is stored in the local storage separately for every permutation of the schema. The key is based on the current parameters and is generated as: `dleh.high-score-${difficulty}-${duration}-${radius}`.
 
-##### music-game
+#### music-game
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | playing | boolean | Whether the music should be playing | false |
@@ -157,7 +157,7 @@ This component will make sure that the song(from [bensound.com](bensound.com)) w
 
 It is also responsibly for ensuring that it will loop correctly.
 
-##### player-cursor
+#### player-cursor
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | active | boolean | Whether this cursor is the current active one | false |
@@ -167,13 +167,13 @@ This component will make sure that the right raycaster is used. The user can tri
 
 When disabled, the raycaster won't be available either way.
 
-##### player-hand
+#### player-hand
 The `player-hand` component tracks the velocity of the hand by comparing the last three positions over the past 150 milliseconds and stores this on the `data-velocity` attribute. It will also set whether the user is making a fist bump or a high five.
 
-##### score
+#### score
 The `score` component will show the current score of the user. Via the `score` system, other components can change the points over time.
 
-##### title-screen
+#### title-screen
 | Name | Type | Description | Default |
 |------|------|-------------|---------|
 | scoreFront | selector | Selects the front score entity | #score-front |
@@ -182,5 +182,5 @@ The `score` component will show the current score of the user. Via the `score` s
 
 This component will update the animations for the score in front of the player and the tutorial component.
 
-##### tutorial
+#### tutorial
 This component will spawn a fanboy for the user to practice on.
