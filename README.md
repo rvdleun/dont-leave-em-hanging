@@ -36,7 +36,7 @@ The result will be saved in the `dist` directory. Deploy the contents to your se
 
 ## Directory structure
 
-### Public
+### public
 Contains all the assets that will be available in the project.
 
 ### src
