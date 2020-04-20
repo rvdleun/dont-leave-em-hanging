@@ -6,7 +6,6 @@ AFRAME.registerComponent('game', {
         fanboyCircle: { type: 'selector', default: '[fanboy-circle] '},
         highScore: { type: 'selector', default: '[high-score]' },
         musicGame: { type: 'selector', default: '[music-game]' },
-        radius: { type: 'number', default: 360 },
         titleScreen: { type: 'selector', default: '[title-screen] '},
     },
 

@@ -19,7 +19,7 @@ AFRAME.registerComponent('button', {
     init: function() {
         this.hovering = false;
 
-        const { backgroundColor, color, text } = this.data;
+        const { backgroundColor, color } = this.data;
 
         const backgroundPlaneEl = document.createElement('a-plane');
         backgroundPlaneEl.setAttribute('color', backgroundColor);

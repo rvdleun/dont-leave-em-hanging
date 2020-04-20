@@ -1,8 +1,4 @@
 AFRAME.registerComponent('hand-receiver', {
-    schema: {
-        lane: { type: 'number', default: -1 },
-    },
-
     events: {
         collide: function(e) {
             const playerHand = e.detail.body.el;
@@ -12,7 +8,7 @@ AFRAME.registerComponent('hand-receiver', {
             }
 
             const velocity = playerHand.getAttribute('data-velocity');
-            this.el.emit('contact', { lane: this.data.lane, playerHand, velocity }, true);
+            this.el.emit('contact', { playerHand, velocity }, true);
         }
     },
 

@@ -4,8 +4,8 @@ AFRAME.registerComponent('fanboy-spawner', {
     schema: {
         camera: { type: 'selector', default: '[camera]' },
         enabled: { type: 'boolean', default: false },
-        type: { type: 'string', default: null },
         radius: { type: 'number', default: 180 },
+        type: { type: 'string', default: null },
     },
 
     events: {
