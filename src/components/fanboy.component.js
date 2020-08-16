@@ -199,7 +199,7 @@ AFRAME.registerComponent('fanboy', {
         receiver.setAttribute('color', 'blue');
         receiver.setAttribute('scale', '.2 .2 .1');
         receiver.setAttribute('visible', 'false');
-        receiver.setAttribute('hand-receiver', { lane });
+        receiver.setAttribute('hand-receiver', '');
         handEl.appendChild(receiver);
 
         this.faceEl = face;

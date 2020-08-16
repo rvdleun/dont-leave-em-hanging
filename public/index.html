@@ -8,7 +8,7 @@
         color: #fa0;
     }
 </style>
-<a-scene physics="debug: false; gravity: 0">
+<a-scene physics="debug: false; gravity: 0" webxr="optionalFeatures: hand-tracking">
     <a-assets>
         <audio id="applause" src="assets/sounds/applause.wav" preload="auto"></audio>
         <audio id="audience" src="assets/sounds/audience.wav" preload="auto"></audio>
@@ -65,11 +65,19 @@
     </a-assets>
 
     <a-entity id="player">
-        <a-entity id="leftHand" cursor player-cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>
-            <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
-        </a-entity>
-        <a-entity id="rightHand" cursor player-cursor="active: true" raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>
-            <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>
+<!--        <a-entity id="leftHand" cursor player-cursor raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: left; handModelStyle: highPoly; color: #ffcccc" player-hand>-->
+<!--            <a-box class="player-hand left hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>-->
+<!--        </a-entity>-->
+<!--        <a-entity id="rightHand" cursor player-cursor="active: true" raycaster="objects: [data-raycastable]; showLine: true;" line="color: red" hand-controls="hand: right; handModelStyle: highPoly; color: #ffcccc" player-hand>-->
+<!--            <a-box class="player-hand right hand" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0.01279 0.0033" scale="0.075 0.15 0.215" visible="false"></a-box>-->
+<!--        </a-entity>-->
+
+        <a-entity id="hand-tracking">
+            <a-entity class="hand" hand-tracking-mesh="color: orange; hand: left" hand-tracking-gestures-mesh></a-entity>
+            <a-box class="player-hand left hand" data-velocity="1000" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0 0" scale=".1 .15 .1" visible="false" hand-tracking-follow="hand: left"></a-box>
+
+            <a-entity class="hand" hand-tracking-mesh="color: orange; hand: right" hand-tracking-gestures-mesh></a-entity>
+            <a-box class="player-hand right hand" data-velocity="1000" static-body material="opacity: 0.5; transparent: true; color: #F00" position="0 0 0" scale=".1 .15 .1" visible="false" hand-tracking-follow="hand: right"></a-box>
         </a-entity>
     </a-entity>
 

@@ -24,7 +24,8 @@ AFRAME.registerComponent('button-radius', {
     selectedRadius: null,
 
     init: function() {
-        this.setRadius(window.localStorage.getItem(this.STORAGE_KEY));
+        // this.setRadius(window.localStorage.getItem(this.STORAGE_KEY));
+        this.setRadius('360');
     },
 
     setRadius: function(radius) {

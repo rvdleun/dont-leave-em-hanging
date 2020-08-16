@@ -16,5 +16,20 @@ AFRAME.registerComponent('button-start', {
             this.el.sceneEl.systems.score.resetModifier();
             this.el.sceneEl.systems.score.setScore(0);
         }
+    },
+
+    init: function() {
+        this.el.sceneEl.addEventListener('enter-vr', () => {
+            setTimeout(() => {
+                const { fanboyCircle, game, titleScreen } = this.data;
+
+                fanboyCircle.setAttribute('fanboy-circle', 'enabled', false);
+                game.setAttribute('game', 'enabled', true);
+                titleScreen.setAttribute('title-screen', 'visible', false);
+
+                this.el.sceneEl.systems.score.resetModifier();
+                this.el.sceneEl.systems.score.setScore(0);
+            }, 5000);
+        });
     }
 });

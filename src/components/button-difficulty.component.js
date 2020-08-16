@@ -24,7 +24,8 @@ AFRAME.registerComponent('button-difficulty', {
     selectedDifficulty: null,
 
     init: function() {
-        this.setDifficulty(window.localStorage.getItem(this.STORAGE_KEY));
+        // this.setDifficulty(window.localStorage.getItem(this.STORAGE_KEY));
+        this.setDifficulty('hand');
     },
 
     setDifficulty: function(difficulty) {
