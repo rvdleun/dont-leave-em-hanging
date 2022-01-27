@@ -23,6 +23,6 @@
     "aframe-text-geometry-component": "^0.5.1",
     "html-webpack-reload-plugin": "^2.0.0",
     "http-server": "^0.12.1",
-    "three": "^0.115.0"
+    "three": "^0.137.0"
   }
 }
