@@ -22,7 +22,7 @@
     "aframe-physics-system": "^4.0.1",
     "aframe-text-geometry-component": "^0.5.1",
     "html-webpack-reload-plugin": "^2.0.0",
-    "http-server": "^0.12.1",
+    "http-server": "^0.12.3",
     "three": "^0.115.0"
   }
 }
